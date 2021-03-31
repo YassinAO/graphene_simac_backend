@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # Application definition
 
 INSTALLED_APPS = [
+    'recipes',
     'graphene_django',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -98,3 +99,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+GRAPHENE = {
+    "SCHEMA": "graphene_simac_backend.schema.schema"
+}
