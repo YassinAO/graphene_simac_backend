@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Recipe, Category, Difficulty
+from .models import Recipe, Category, Difficulty, Enrollment
 
 # Register your models here.
 
@@ -10,7 +10,7 @@ class RecipeAdmin(admin.ModelAdmin):
     list_filter = ('category', 'difficulty',)
     ordering = ('-date_posted',)
     list_display = ('title', 'total_servings', 'preparation_time',
-                    'category', 'difficulty', 'rating')
+                    'category', 'difficulty', 'rating',)
     fieldsets = (
         ('About', {'fields': ('title', 'description',)}),
         ('Requirements', {'fields': ('total_servings', 'preparation_time',)}),
@@ -22,3 +22,4 @@ class RecipeAdmin(admin.ModelAdmin):
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Category)
 admin.site.register(Difficulty)
+admin.site.register(Enrollment)

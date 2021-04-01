@@ -1,6 +1,8 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from events.models import Event
 # Create your models here.
 
 
@@ -38,6 +40,7 @@ class Recipe(models.Model):
     difficulty = models.ForeignKey(
         Difficulty, default=1, on_delete=models.DO_NOTHING)
     chef = models.ForeignKey(User, on_delete=models.CASCADE)
+    events = models.ManyToManyField(Event, blank=True, through='Enrollment')
 
     class Meta:
         verbose_name = 'Recipe'
@@ -45,3 +48,17 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Enrollment(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = [['event', 'recipe']]
+        verbose_name = 'Enrollment'
+        verbose_name_plural = 'Enrollments'
+
+        # def __str__(self):
+        #     return self.date_added
