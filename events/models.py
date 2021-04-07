@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
@@ -18,7 +18,7 @@ class Category(models.Model):
 
 class Event(models.Model):
     title = models.CharField(max_length=50)
-    decscription = models.TextField()
+    description = models.TextField()
     location = models.CharField(max_length=50)
     duration = models.IntegerField(default=60)
     max_participants = models.IntegerField(default=10)
