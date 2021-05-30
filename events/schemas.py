@@ -86,6 +86,21 @@ class UpdateEvent(graphene.Mutation):
         return UpdateEvent(event=event)
 
 
+class DeleteEvent(graphene.Mutation):
+
+    class Arguments:
+        id = graphene.ID()
+
+    # EVENT MODEL
+    event = graphene.Field(EventType)
+
+    @classmethod
+    def mutate(cls, self, info, id):
+        event = Event.objects.get(id=id)
+        event.delete()
+        return DeleteEvent(event=event)
+
+
 class CreateEventCategory(graphene.Mutation):
 
     class Arguments:
@@ -118,9 +133,26 @@ class UpdateEventCategory(graphene.Mutation):
         return UpdateEventCategory(category=category)
 
 
+class DeleteEventCategory(graphene.Mutation):
+
+    class Arguments:
+        id = graphene.ID()
+
+    # CATEGORY MODEL
+    category = graphene.Field(EventCategoryType)
+
+    @classmethod
+    def mutate(cls, self, info, id):
+        category = Category.objects.get(id=id)
+        category.delete()
+        return DeleteEventCategory(category=category)
+
+
 class Mutation(graphene.ObjectType):
     create_event = CreateEvent.Field()
     update_event = UpdateEvent.Field()
+    delete_event = DeleteEvent.Field()
 
     create_event_category = CreateEventCategory.Field()
     update_event_category = UpdateEventCategory.Field()
+    delete_event_category = DeleteEventCategory.Field()
