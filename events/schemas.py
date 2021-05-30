@@ -40,3 +40,14 @@ class Query(graphene.ObjectType):
 
     def resolve_event_by_host(self, info, host):
         return Event.objects.filter(host=host)
+
+
+class EventInput(graphene.InputObjectType):
+    title = graphene.String(required=True)
+    description = graphene.String(required=True)
+    location = graphene.String(required=True)
+    duration = graphene.Int(required=True)
+    max_participants = graphene.Int(required=True)
+    date_hosted = graphene.String(required=False)
+    cover_photo = graphene.String(required=True)
+    category_id = graphene.Int(name="category")
