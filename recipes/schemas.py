@@ -79,3 +79,13 @@ class Query(graphene.ObjectType):
 
     def resolve_recipe_difficulty_by_id(self, info, id):
         return Difficulty.objects.get(pk=id)
+
+
+class RecipeInput(graphene.InputObjectType):
+    title = graphene.String(required=True)
+    description = graphene.String(required=True)
+    total_servings = graphene.Int(required=True)
+    preparation_time = graphene.Int(required=True)
+    rating = graphene.Int(required=True)
+    category_id = graphene.Int(name="category")
+    difficulty_id = graphene.Int(name="difficulty")
