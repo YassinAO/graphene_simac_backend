@@ -51,3 +51,39 @@ class EventInput(graphene.InputObjectType):
     date_hosted = graphene.String(required=False)
     cover_photo = graphene.String(required=True)
     category_id = graphene.Int(name="category")
+
+
+class CreateEvent(graphene.Mutation):
+
+    class Arguments:
+        eventData = EventInput(required=True)
+
+    # EVENT MODEL
+    event = graphene.Field(EventType)
+
+    @classmethod
+    def mutate(cls, self, info, eventData):
+        event = Event(**eventData, host=info.context.user)
+        event.save()
+        return CreateEvent(event=event)
+
+
+class CreateEventCategory(graphene.Mutation):
+
+    class Arguments:
+        name = graphene.String(required=True)
+
+    # CATEGORY MODEL
+    category = graphene.Field(EventCategoryType)
+
+    @classmethod
+    def mutate(cls, self, info, name):
+        category = Category(name=name)
+        category.save()
+        return CreateEventCategory(category=category)
+
+
+class Mutation(graphene.ObjectType):
+    create_event = CreateEvent.Field()
+
+    create_event_category = CreateEventCategory.Field()
