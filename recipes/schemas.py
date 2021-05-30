@@ -124,6 +124,21 @@ class UpdateRecipe(graphene.Mutation):
         return UpdateRecipe(recipe=recipe)
 
 
+class DeleteRecipe(graphene.Mutation):
+
+    class Arguments:
+        id = graphene.ID()
+
+    # RECIPE MODEL
+    recipe = graphene.Field(RecipeType)
+
+    @classmethod
+    def mutate(cls, self, info, id):
+        recipe = Recipe.objects.get(id=id)
+        recipe.delete()
+        return DeleteRecipe(recipe=recipe)
+
+
 class CreateRecipeCategory(graphene.Mutation):
 
     class Arguments:
@@ -154,6 +169,21 @@ class UpdateRecipeCategory(graphene.Mutation):
         category.name = name
         category.save()
         return UpdateRecipeCategory(category=category)
+
+
+class DeleteRecipeCategory(graphene.Mutation):
+
+    class Arguments:
+        id = graphene.ID()
+
+    # CATEGORY MODEL
+    category = graphene.Field(RecipeCategoryType)
+
+    @classmethod
+    def mutate(cls, self, info, id):
+        category = Category.objects.get(id=id)
+        category.delete()
+        return DeleteRecipeCategory(category=category)
 
 
 class CreateRecipeDifficulty(graphene.Mutation):
@@ -188,12 +218,30 @@ class UpdateRecipeDifficulty(graphene.Mutation):
         return UpdateRecipeDifficulty(difficulty=difficulty)
 
 
+class DeleteRecipeDifficulty(graphene.Mutation):
+
+    class Arguments:
+        id = graphene.ID()
+
+    # DIFFICULTY MODEL
+    difficulty = graphene.Field(RecipeDifficultyType)
+
+    @classmethod
+    def mutate(cls, self, info, id):
+        difficulty = Difficulty.objects.get(id=id)
+        difficulty.delete()
+        return DeleteRecipeDifficulty(difficulty=difficulty)
+
+
 class Mutation(graphene.ObjectType):
     create_recipe = CreateRecipe.Field()
     update_recipe = UpdateRecipe.Field()
+    delete_recipe = DeleteRecipe.Field()
 
     create_recipe_category = CreateRecipeCategory.Field()
     update_recipe_category = UpdateRecipeCategory.Field()
+    delete_recipe_category = DeleteRecipeCategory.Field()
 
     create_recipe_difficulty = CreateRecipeDifficulty.Field()
     update_recipe_difficulty = UpdateRecipeDifficulty.Field()
+    delete_recipe_difficulty = DeleteRecipeDifficulty.Field()
