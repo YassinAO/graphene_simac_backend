@@ -106,6 +106,24 @@ class CreateRecipe(graphene.Mutation):
         return CreateRecipe(recipe=recipe)
 
 
+class UpdateRecipe(graphene.Mutation):
+
+    class Arguments:
+        id = graphene.ID()
+        recipeData = RecipeInput(required=True)
+
+    # RECIPE MODEL
+    recipe = graphene.Field(RecipeType)
+
+    @classmethod
+    def mutate(cls, self, info, id, recipeData):
+        recipe = Recipe.objects.get(id=id)
+        for key, value in recipeData.items():
+            setattr(recipe, key, value)
+        recipe.save()
+        return UpdateRecipe(recipe=recipe)
+
+
 class CreateRecipeCategory(graphene.Mutation):
 
     class Arguments:
@@ -119,6 +137,23 @@ class CreateRecipeCategory(graphene.Mutation):
         category = Category(name=name)
         category.save()
         return CreateRecipeCategory(category=category)
+
+
+class UpdateRecipeCategory(graphene.Mutation):
+
+    class Arguments:
+        id = graphene.ID()
+        name = graphene.String(required=True)
+
+    # CATEGORY MODEL
+    category = graphene.Field(RecipeCategoryType)
+
+    @classmethod
+    def mutate(cls, self, info, name, id):
+        category = Category.objects.get(id=id)
+        category.name = name
+        category.save()
+        return UpdateRecipeCategory(category=category)
 
 
 class CreateRecipeDifficulty(graphene.Mutation):
@@ -136,9 +171,29 @@ class CreateRecipeDifficulty(graphene.Mutation):
         return CreateRecipeDifficulty(difficulty=difficulty)
 
 
+class UpdateRecipeDifficulty(graphene.Mutation):
+
+    class Arguments:
+        id = graphene.ID()
+        name = graphene.String(required=True)
+
+    # DIFFICULTY MODEL
+    difficulty = graphene.Field(RecipeDifficultyType)
+
+    @classmethod
+    def mutate(cls, self, info, name, id):
+        difficulty = Difficulty.objects.get(id=id)
+        difficulty.name = name
+        difficulty.save()
+        return UpdateRecipeDifficulty(difficulty=difficulty)
+
+
 class Mutation(graphene.ObjectType):
     create_recipe = CreateRecipe.Field()
+    update_recipe = UpdateRecipe.Field()
 
     create_recipe_category = CreateRecipeCategory.Field()
+    update_recipe_category = UpdateRecipeCategory.Field()
 
     create_recipe_difficulty = CreateRecipeDifficulty.Field()
+    update_recipe_difficulty = UpdateRecipeDifficulty.Field()
