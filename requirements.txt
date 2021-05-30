@@ -3,6 +3,7 @@ asgiref==3.3.1
 coverage==5.5
 Django==3.1.7
 Faker==8.3.0
+Django==3.1.8
 graphene==2.1.8
 graphene-django==2.15.0
 graphql-core==2.3.2
