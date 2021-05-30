@@ -1,12 +1,12 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
-
-# Create your models here.
+from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
+User = get_user_model()
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, default='uncategorized')
 
     class Meta:
         verbose_name = 'Category'
@@ -18,14 +18,15 @@ class Category(models.Model):
 
 class Event(models.Model):
     title = models.CharField(max_length=50)
-    decscription = models.TextField()
+    description = models.TextField()
     location = models.CharField(max_length=50)
     duration = models.IntegerField(default=60)
     max_participants = models.IntegerField(default=10)
     date_hosted = models.DateTimeField(auto_now_add=False, auto_now=False)
     date_posted = models.DateTimeField(default=timezone.now)
     cover_photo = models.FilePathField(path=None, match=None, max_length=100)
-    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(
+        Category, null=True, on_delete=models.SET_NULL)
     host = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:

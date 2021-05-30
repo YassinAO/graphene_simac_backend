@@ -1,9 +1,9 @@
 from django.db import models
-from django.utils import timezone
-from django.contrib.auth.models import User
-from django.utils.translation import gettext_lazy as _
 from events.models import Event
-# Create your models here.
+from django.utils import timezone
+from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
+User = get_user_model()
 
 
 class Category(models.Model):
@@ -36,9 +36,9 @@ class Recipe(models.Model):
     rating = models.IntegerField(default=5)
     date_posted = models.DateField(auto_now_add=True)
     category = models.ForeignKey(
-        Category, default=1, on_delete=models.DO_NOTHING)
+        Category, default=1, null=True, on_delete=models.SET_NULL)
     difficulty = models.ForeignKey(
-        Difficulty, default=1, on_delete=models.DO_NOTHING)
+        Difficulty, default=1, null=True, on_delete=models.SET_NULL)
     chef = models.ForeignKey(User, on_delete=models.CASCADE)
     events = models.ManyToManyField(Event, blank=True, through='Enrollment')
 

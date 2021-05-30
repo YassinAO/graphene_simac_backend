@@ -24,6 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 INSTALLED_APPS = [
     'events',
     'recipes',
+    'users',
     'graphene_django',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -104,3 +105,5 @@ STATIC_URL = '/static/'
 GRAPHENE = {
     "SCHEMA": "graphene_simac_backend.schema.schema"
 }
+
+AUTH_USER_MODEL = 'users.User'
