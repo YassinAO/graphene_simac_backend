@@ -89,3 +89,56 @@ class RecipeInput(graphene.InputObjectType):
     rating = graphene.Int(required=True)
     category_id = graphene.Int(name="category")
     difficulty_id = graphene.Int(name="difficulty")
+
+
+class CreateRecipe(graphene.Mutation):
+
+    class Arguments:
+        recipeData = RecipeInput(required=True)
+
+    # RECIPE MODEL
+    recipe = graphene.Field(RecipeType)
+
+    @classmethod
+    def mutate(cls, self, info, recipeData):
+        recipe = Recipe(**recipeData, chef=info.context.user)
+        recipe.save()
+        return CreateRecipe(recipe=recipe)
+
+
+class CreateRecipeCategory(graphene.Mutation):
+
+    class Arguments:
+        name = graphene.String(required=True)
+
+    # CATEGORY MODEL
+    category = graphene.Field(RecipeCategoryType)
+
+    @classmethod
+    def mutate(cls, self, info, name):
+        category = Category(name=name)
+        category.save()
+        return CreateRecipeCategory(category=category)
+
+
+class CreateRecipeDifficulty(graphene.Mutation):
+
+    class Arguments:
+        name = graphene.String(required=True)
+
+    # DIFFICULTY MODEL
+    difficulty = graphene.Field(RecipeDifficultyType)
+
+    @classmethod
+    def mutate(cls, self, info, name):
+        difficulty = Difficulty(name=name)
+        difficulty.save()
+        return CreateRecipeDifficulty(difficulty=difficulty)
+
+
+class Mutation(graphene.ObjectType):
+    create_recipe = CreateRecipe.Field()
+
+    create_recipe_category = CreateRecipeCategory.Field()
+
+    create_recipe_difficulty = CreateRecipeDifficulty.Field()
