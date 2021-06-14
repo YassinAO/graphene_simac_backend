@@ -9,6 +9,7 @@ from rangefilter.filters import DateRangeFilter, DateTimeRangeFilter
 class UserAdminConfig(UserAdmin):
     model = User
     list_per_page = 10
+    # change_list_template = 'change_list_form.html'
 
     search_fields = ('email', 'username',)
     list_filter = (('date_joined', DateRangeFilter),
