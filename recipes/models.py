@@ -3,6 +3,7 @@ from events.models import Event
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from ckeditor.fields import RichTextField
 User = get_user_model()
 
 
@@ -30,7 +31,8 @@ class Difficulty(models.Model):
 
 class Recipe(models.Model):
     title = models.CharField(max_length=50)
-    description = models.TextField()
+    description = RichTextField(blank=True, null=True)
+    # description = models.TextField()
     total_servings = models.IntegerField(default=1)
     preparation_time = models.IntegerField(default=60)
     rating = models.IntegerField(default=5)
